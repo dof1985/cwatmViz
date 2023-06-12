@@ -33,7 +33,7 @@ getCodes <- function(flux =  NULL) {
     stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(dbase)))
 
     return(unique(do.call("rbind", lapply(flux, function(fl) {
-      inst <- dbase[[inst]]
+      inst <- dbase[[fl]]
       inst[c("crcl_name", "crcl_code")]
     }))))
   }
