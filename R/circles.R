@@ -461,7 +461,7 @@ buildCircle <- function(circles = NULL,
     return(p)
   }), nm = circles)
 
-  fig <- plotly::layout(do.call("subplot", sunBursts),
+  fig <- plotly::layout(do.call(eval(parse(text="plotly::subplot")), sunBursts),
                 grid = list(columns = 1 + (length(circles) > 1),
                             rows = ceiling(length(circles)/2)),
                 title = "Water Circles")
