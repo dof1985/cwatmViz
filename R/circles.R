@@ -446,7 +446,7 @@ buildCircle <- function(circles = NULL,
 
     idx <- which(circles %in% circle)
 
-    p <- plot_ly(df2o, ids = ~var,
+    p <- plotly::plot_ly(df2o, ids = ~var,
                  values = ~ value,
                  parents = ~parents,
                  labels = ~lbl,
@@ -461,7 +461,7 @@ buildCircle <- function(circles = NULL,
     return(p)
   }), nm = circles)
 
-  fig <- layout(do.call("subplot", sunBursts),
+  fig <- plotly::layout(do.call("subplot", sunBursts),
                 grid = list(columns = 1 + (length(circles) > 1),
                             rows = ceiling(length(circles)/2)),
                 title = "Water Circles")
