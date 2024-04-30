@@ -217,7 +217,7 @@ buildCircle <- function(circles = NULL,
 
 
     if(tmpdbase[tmpdbase$var %in% invars$var[i], "var_unit"] == "ton") {
-      r$value <- r$value * 10^3
+      r$value <- r$value * 10 ^ 3
     }
 
     if(tmpdbase[tmpdbase$var %in% invars$var[i], "var_unit"] == "M3") {
@@ -387,7 +387,15 @@ buildCircle <- function(circles = NULL,
       lblunit <- "Ton"
       if (total > 10^5) {
         totLbl <- total / 1000
-        lblunit <- "kTon"
+        lblunit <- "kTon" # kilo
+      }
+      if(total > 10^6) {
+        totLbl <- total / 1000000
+        lblunit <- "MTon" # Mega
+      }
+      if(total > 10^9) {
+        totLbl <- total / 1000000000
+        lblunit <- "GTon" #Giga
       }
     }
 
