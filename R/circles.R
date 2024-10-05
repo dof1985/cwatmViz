@@ -221,7 +221,7 @@ buildCircle <- function(circles = NULL,
     }
 
     if(tmpdbase[tmpdbase$var %in% invars$var[i], "var_unit"] == "M3") {
-      r$value <- r$value / 10 ^ 6
+      r$value <- r$value
     }
 
     return(r)
