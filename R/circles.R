@@ -207,7 +207,7 @@ buildCircle <- function(circles = NULL,
 
     if(loud) print(fin)
     if(tmpdbase[tmpdbase$var %in% invars$var[i], "var_unit"] == "M") {
-      r <- cwatmRutils::ncdf2raster(pth = fin, transpose = TRUE, spatial = areamask / 10^6,
+      r <- cwatmRutils::ncdf2raster(pth = fin, transpose = TRUE, spatial = areamask,
                                     flip = NULL, fun = sum, na.rm = TRUE, time = timeCons)
     } else {
       r <- cwatmRutils::ncdf2raster(pth = fin, transpose = TRUE, spatial = !is.na(areamask),
