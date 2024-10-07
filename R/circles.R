@@ -131,6 +131,7 @@ buildCircle <- function(circles = NULL,
                         timeCons = NULL,
                         annualAverage = FALSE,
                         printBalance = FALSE,
+                        cancelLables = FALSE,
                         loud = FALSE) {
 
 
@@ -458,7 +459,9 @@ buildCircle <- function(circles = NULL,
     colSet <- gsub("Outputs_lvl1", clrs[2], colSet) #e75f70
 
     idx <- which(circles %in% circle)
-
+    if(cancelLables) {
+      df2o$lbl[grep("Root$", df2o$var, invert = TRUE)] <- ""
+    }
     p <- plotly::plot_ly(df2o, ids = ~var,
                  values = ~ value,
                  parents = ~parents,
