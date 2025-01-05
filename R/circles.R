@@ -11,7 +11,7 @@
 #'
 #' @export
 getFluxes <- function() {
-  return(names(cwatmRutils::dbase))
+  return(names(cwatmViz::dbase))
 }
 
 
@@ -30,14 +30,14 @@ getFluxes <- function() {
 #' @export
 getCodes <- function(flux =  NULL) {
   if(!is.null(flux)) {
-    stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(cwatmRutils::dbase)))
+    stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(cwatmViz::dbase)))
 
     return(unique(do.call("rbind", lapply(flux, function(fl) {
-      inst <- cwatmRutils::dbase[[fl]]
+      inst <- cwatmViz::dbase[[fl]]
       inst[c("crcl_name", "crcl_code")]
     }))))
   }
-  return(unique(do.call("rbind", lapply(cwatmRutils::dbase, function(inst) {
+  return(unique(do.call("rbind", lapply(cwatmViz::dbase, function(inst) {
     inst[c("crcl_name", "crcl_code")]
   }))))
 }
@@ -66,12 +66,12 @@ getVars <- function(circle = NULL,
                     limitAbstr = FALSE) {
 
   if(!is.null(flux)) {
-    stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(cwatmRutils::dbase)))
+    stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(cwatmViz::dbase)))
   }
 
   #subset fluxes
   tmpdbase <- unique(do.call("rbind", lapply(flux, function(flx) {
-    inst <- cwatmRutils::dbase[[flx]]
+    inst <- cwatmViz::dbase[[flx]]
     inst$flux <- flx
     return(inst)
   })))
@@ -145,12 +145,12 @@ buildCircle <- function(circles = NULL,
   }
 
   if(!is.null(flux)) {
-    stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(cwatmRutils::dbase)))
+    stopifnot("Unknown flux code, use NULL or check getFluxes()" = all(flux %in% names(cwatmViz::dbase)))
   }
 
   #subset fluxes
   tmpdbase <- unique(do.call("rbind", lapply(flux, function(flx) {
-    inst <- cwatmRutils::dbase[[flx]]
+    inst <- cwatmViz::dbase[[flx]]
     inst$flux <- flx
     return(inst)
   })))
