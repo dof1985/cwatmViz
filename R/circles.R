@@ -236,7 +236,7 @@ buildCircle <- function(circles = NULL,
     d <- cwatmRutils::ncdf2raster(pth = fin, transpose = TRUE, spatial = outlet, time = timeCons)
 
     d <- dplyr::summarise(dplyr::group_by(d, var, time), "value" = sum(value, na.rm = TRUE))
-    d$value <- d$value * M3StoM3 / 10^6
+    d$value <- d$value * M3StoM3# / 10^6
 
     #d$flow <- tmpdbase[tmpdbase$var %in% "discharge" , "var_flow"]
 
