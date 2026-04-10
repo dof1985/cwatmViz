@@ -213,6 +213,9 @@ buildCircle <- function(circles = NULL,
     } else {
       r <- cwatmRutils::ncdf2raster(pth = fin, transpose = TRUE, spatial = !is.na(areamask),
                                     flip = NULL, fun = sum, na.rm = TRUE, time = timeCons)
+      if(tmpdbase[tmpdbase$var %in% invars$var[i], "var_unit"] == "kg/s") {
+        r$value <- r$value * M3StoM3
+      }
     }
 
 
