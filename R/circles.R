@@ -202,7 +202,15 @@ buildCircle <- function(circles = NULL,
     invars <- as.data.frame(invars[!invars$var %in% "discharge", ])
     names(invars) <- "var"
   }
-
+  
+  replaceOutlet <- (flux != "hydro" & "channel" %in% circles & !is.null(spatial) & !is.null(outlet))
+  
+  if(replaceOutlet) {
+    disvar <- gsub("outlet", "channel", invars[grep("outlet_",  invars$var), ])
+    invars <- as.data.frame(invars[grep("outlet_", invars$var, invert = TRUE), ])
+    names(invars) <- "var"
+  }
+  
   dailyGeneral <- do.call("rbind", lapply(seq_len(nrow(invars)), function(i) {
     fin <- sprintf("%s/%s_daily.nc", dataPath, invars$var[i])
 
@@ -245,6 +253,25 @@ buildCircle <- function(circles = NULL,
 
     dailyGeneral <- as.data.frame(rbind(dailyGeneral, d[c("var" ,"time", "value")]))
   }
+  
+  if(replaceOutlet) {
+    outlet_rplc <- do.call("rbind", lapply(disvar,function(v) {
+      fin <- sprintf("%s/%s_daily.nc", dataPath, v)
+      
+      if(!class(outlet) %in% "data.frame") outlet <- as.data.frame(matrix(outlet, nrow = 1, dimnames = list(NULL, c("x", "y"))))
+      
+      d <- cwatmRutils::ncdf2raster(pth = fin, transpose = TRUE, spatial = outlet, time = timeCons)
+      d$var <- gsub("channel", "outlet", d$var)
+      #d <- dplyr::summarise(dplyr::group_by(d, var, time), "value" = sum(value, na.rm = TRUE))
+      d$value <- d$value * M3StoM3# / 10^6
+      return(d)
+    }))
+    outlet_rplc <- as.data.frame(dplyr::summarise(dplyr::group_by(outlet_rplc, var, time), "value" = sum(value, na.rm = TRUE)))
+    
+    #d$flow <- tmpdbase[tmpdbase$var %in% "discharge" , "var_flow"]
+    dailyGeneral <- as.data.frame(rbind(dailyGeneral, outlet_rplc[c("var" ,"time", "value")]))
+  }
+ 
 
   sunBursts <- setNames(lapply(circles, function(circle) {
     if(loud) print(circle)
