@@ -289,6 +289,9 @@ buildCircle <- function(circles = NULL,
                                               "value" = sum(value, na.rm = TRUE)))
     # create circle dataframes ####
     balance <- tidyr::spread(daily_c[c("time", "var_name", "value")], var_name, value, fill = 0)
+    if(replaceOutlet) {
+      balance$Storage <- balance$Storage - balance$Outlet
+    }
     balSum <- colSums(balance[,-1], na.rm = TRUE)
 
 
